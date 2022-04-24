@@ -81,6 +81,7 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
                         break;
                     }
                     case ERROR:{
+                        break;
                     }
                 }
 
