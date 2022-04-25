@@ -16,12 +16,12 @@ public class MainRepository {
     public  MainRepository (WeatherApi api){
         this.api =api;
     }
-    public MutableLiveData<Resource<Main>> getWeather(){
-        MutableLiveData<Resource<Main>> liveData = new MutableLiveData<>();
+    public MutableLiveData<Resource<MainResponse>> getWeather(){
+        MutableLiveData<Resource<MainResponse>> liveData = new MutableLiveData<>();
         liveData.setValue(Resource.loading());
-        api.getWeather("Bishkek","1e8bec11ba5be4f42b7129692433b744").enqueue(new Callback<Main>() {
+        api.getWeather("Bishkek","1e8bec11ba5be4f42b7129692433b744").enqueue(new Callback<MainResponse>() {
             @Override
-            public void onResponse(Call<Main> call, Response<Main> response) {
+            public void onResponse(Call<MainResponse> call, Response<MainResponse> response) {
                 if(response.isSuccessful() && response.body()!=null){
                     liveData.setValue(Resource.success(response.body()));
                 }else{
@@ -30,7 +30,7 @@ public class MainRepository {
             }
 
             @Override
-            public void onFailure(Call<Main> call, Throwable t) {
+            public void onFailure(Call<MainResponse> call, Throwable t) {
                 liveData.setValue(Resource.error(t.getLocalizedMessage(),null));
             }
         });

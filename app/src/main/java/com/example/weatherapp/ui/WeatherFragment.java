@@ -3,35 +3,41 @@ package com.example.weatherapp.ui;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.example.weatherapp.R;
+import android.view.View;
+
+
+
 import com.example.weatherapp.base.BaseFragment;
 import com.example.weatherapp.common.Resource;
-import com.example.weatherapp.data.model.Main;
+
 import com.example.weatherapp.data.model.MainResponse;
+
+
 import com.example.weatherapp.data.model.Weather;
-import com.example.weatherapp.data.repositories.MainRepository;
 import com.example.weatherapp.databinding.FragmentWeatherBinding;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
 
     private WeatherViewModel viewModel;
-    Main weather = new Main();
 
-    public void setWeather(Main weather) {
-        this.weather = weather;
-
-    }
+    private ArrayList<Weather> weatherArrayList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,22 +72,59 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
     @Override
     protected void setupObservers() {
 
-        viewModel.liveData.observe(getViewLifecycleOwner(), new Observer<Resource<Main>>() {
+        viewModel.liveData.observe(getViewLifecycleOwner(), (Observer<? super Resource<MainResponse>>) new Observer<Resource<MainResponse>>() {
             @SuppressLint("SetTextI18n")
             @Override
-            public void onChanged(Resource<Main> resource) {
+            public void onChanged(Resource<MainResponse> resource) {
                 switch (resource.status){
                     case LOADING:{
                         break;
                     }
+
                     case SUCCESS:{
-                        setWeather(resource.data);
-                        binding.tvTMin.setText(weather.getTempMin().toString());
-                        binding.tvTMin.setVisibility(View.VISIBLE);
+                        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("EEEE, d MMM yyyy | HH:mm");
+                        String date = df.format(Calendar.getInstance().getTime());
+                        binding.date.setText(date);
+                        Date sr = new Date(resource.data.getSys().getSunrise()*1000L);
+                        Date ss = new Date(resource.data.getSys().getSunset()*1000L);
+                        Date dt = new Date(resource.data.getDt()*1000L);
+                        @SuppressLint("SimpleDateFormat") DateFormat tm = new SimpleDateFormat("h:mm a");
+                        @SuppressLint("SimpleDateFormat") DateFormat hm = new SimpleDateFormat("hh'h' mm'm'");
+                        tm.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+                        hm.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+                        String tmSunrise = tm.format(sr);
+                        String tmSunSet =tm.format(ss);
+                        String dayTime =hm.format(dt);
+
+
+                        weatherArrayList =(ArrayList<Weather>) resource.data.getWeather();
+                        binding.city.setText(resource.data.getSys().getCountry()+","+resource.data.getName());
+                        binding.sunny.setText(weatherArrayList.get(0).getMain());
+                        binding.tvTemp.setText(resource.data.getMain().getTemp().toString());
+                        binding.tvTempMax.setText(resource.data.getMain().getTempMax().toString()+"°C");
+                        binding.tvTempMin.setText(resource.data.getMain().getTempMin().toString()+"°C");
+                        binding.tvHumidity.setText(resource.data.getMain().getHumidity().toString()+"%");
+                        binding.tvPressure.setText(resource.data.getMain().getPressure().toString()+"hPa");
+                        binding.tvWind.setText(resource.data.getWind().getSpeed().toString()+"meter/sec");
+                        binding.tvSunrise.setText(tmSunrise);
+                        binding.tvSunset.setText(tmSunSet);
+                        binding.tvDaytime.setText(dayTime);
+
+
+                        binding.tvTemp.setVisibility(View.VISIBLE);
+                        binding.tvTempMax.setVisibility(View.VISIBLE);
+                        binding.tvTempMin.setVisibility(View.VISIBLE);
+                        binding.tvHumidity.setVisibility(View.VISIBLE);
+                        binding.tvPressure.setVisibility(View.VISIBLE);
+                        binding.tvWind.setVisibility(View.VISIBLE);
+                        binding.tvSunrise.setVisibility(View.VISIBLE);
+                        binding.tvSunset.setVisibility(View.VISIBLE);
+                        binding.tvDaytime.setVisibility(View.VISIBLE);
+                        binding.sunny.setVisibility(View.VISIBLE);
+                        binding.city.setVisibility(View.VISIBLE);
                         break;
                     }
                     case ERROR:{
-                        break;
                     }
                 }
 

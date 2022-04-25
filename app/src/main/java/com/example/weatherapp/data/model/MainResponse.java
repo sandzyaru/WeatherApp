@@ -1,7 +1,11 @@
 
 package com.example.weatherapp.data.model;
 
+
+
+
 import java.util.List;
+
 
 
 import com.google.gson.annotations.Expose;
@@ -14,7 +18,7 @@ public class MainResponse  {
     private Coord coord;
     @SerializedName("weather")
     @Expose
-    private List<Weather> weather = null;
+    private List<Weather> weather=null;
     @SerializedName("base")
     @Expose
     private String base;
@@ -163,5 +167,6 @@ public class MainResponse  {
     public void setCod(Integer cod) {
         this.cod = cod;
     }
+
 
 }
