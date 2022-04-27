@@ -7,7 +7,34 @@
 
     <fragment
         android:id="@+id/weatherFragment"
-        android:name="com.example.weatherapp.ui.WeatherFragment"
+        android:name="com.example.weatherapp.ui.weather.WeatherFragment"
         android:label="fragment_weather"
-        tools:layout="@layout/item_weather" />
+        tools:layout="@layout/item_weather" >
+        <action
+            android:id="@+id/action_weatherFragment_to_citySelectionFragment"
+            app:destination="@id/citySelectionFragment" />
+        <argument
+            android:name="cityName"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="Bishkek"
+            />
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/citySelectionFragment"
+        android:name="com.example.weatherapp.ui.selection.CitySelectionFragment"
+        android:label="fragment_city_selection"
+        tools:layout="@layout/fragment_city_selection" >
+        <action
+            android:id="@+id/action_citySelectionFragment_to_weatherFragment"
+            app:destination="@id/weatherFragment" >
+        <argument
+            android:name="cityName"
+            app:argType="string"
+            app:nullable="false"
+
+            /></action>
+    </fragment>
 </navigation>

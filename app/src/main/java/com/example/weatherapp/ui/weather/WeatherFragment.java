@@ -1,13 +1,16 @@
-package com.example.weatherapp.ui;
+package com.example.weatherapp.ui.weather;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+
 
 
 import androidx.annotation.Nullable;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+
 
 
 import android.view.View;
@@ -23,20 +26,22 @@ import com.example.weatherapp.data.model.MainResponse;
 import com.example.weatherapp.data.model.Weather;
 import com.example.weatherapp.databinding.FragmentWeatherBinding;
 
+
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
-public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
+@AndroidEntryPoint
+public class WeatherFragment extends BaseFragment<FragmentWeatherBinding>  {
 
     private WeatherViewModel viewModel;
-
+    private WeatherFragmentArgs args;
     private ArrayList<Weather> weatherArrayList = new ArrayList<>();
 
     @Override
@@ -44,6 +49,9 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
         super.onCreate(savedInstanceState);
         viewModel= new ViewModelProvider(requireActivity())
                 .get(WeatherViewModel.class);
+        args = WeatherFragmentArgs.fromBundle(getArguments());
+
+
     }
 
     @Override
@@ -61,13 +69,22 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
 
     @Override
     protected void callRequests() {
-        viewModel.getWeather();
+            viewModel.getWeather(args.getCityName() );
     }
 
     @Override
     protected void setupListener() {
+        binding.city.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(WeatherFragmentDirections.actionWeatherFragmentToCitySelectionFragment());
+
+
+            }
+        });
 
     }
+
 
     @Override
     protected void setupObservers() {
@@ -131,4 +148,8 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding> {
             }
         });
     }
+
+
+
+
 }

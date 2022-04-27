@@ -14,12 +14,14 @@ import androidx.navigation.Navigation;
 import androidx.viewbinding.ViewBinding;
 
 import com.example.weatherapp.R;
+import com.example.weatherapp.ui.OnItemClick;
 
 
 public abstract class BaseFragment<VB extends ViewBinding>extends Fragment {
     protected VB binding;
     protected abstract VB bind();
     protected NavController navController;
+
 
     @Nullable
     @Override
