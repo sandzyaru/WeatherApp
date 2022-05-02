@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.View;
 
 
-
+import com.example.weatherapp.App;
 import com.example.weatherapp.base.BaseFragment;
 import com.example.weatherapp.common.Resource;
 
@@ -25,7 +25,7 @@ import com.example.weatherapp.data.model.MainResponse;
 
 import com.example.weatherapp.data.model.Weather;
 import com.example.weatherapp.databinding.FragmentWeatherBinding;
-
+import com.example.weatherapp.di.AppModule;
 
 
 import java.text.DateFormat;
@@ -50,6 +50,8 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding>  {
         viewModel= new ViewModelProvider(requireActivity())
                 .get(WeatherViewModel.class);
         args = WeatherFragmentArgs.fromBundle(getArguments());
+
+
 
 
     }
@@ -139,6 +141,7 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding>  {
                         binding.tvDaytime.setVisibility(View.VISIBLE);
                         binding.sunny.setVisibility(View.VISIBLE);
                         binding.city.setVisibility(View.VISIBLE);
+
                         break;
                     }
                     case ERROR:{

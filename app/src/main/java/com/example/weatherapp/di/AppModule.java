@@ -1,5 +1,12 @@
 package com.example.weatherapp.di;
 
+
+import android.content.Context;
+
+import androidx.room.Room;
+
+import com.example.weatherapp.data.local.AppDatabase;
+import com.example.weatherapp.data.local.WeatherDao;
 import com.example.weatherapp.data.remote.WeatherApi;
 
 import com.example.weatherapp.data.repositories.MainRepositoryImpl;
@@ -10,6 +17,7 @@ import com.example.weatherapp.domain.repository.MainRepository;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -38,8 +46,19 @@ public abstract class AppModule {
         return  retrofit.create(WeatherApi.class);
     }
     @Provides
-    public  static MainRepository provideMainRepository(WeatherApi api){
-        return new MainRepositoryImpl(api);
+    public  static MainRepository provideMainRepository(WeatherApi api,WeatherDao dao){
+        return new MainRepositoryImpl(api,dao);
+    }
+    @Provides
+    public static AppDatabase provideAppDatabase(@ApplicationContext Context context){
+      return Room.databaseBuilder(context,AppDatabase.class,"database")
+        .allowMainThreadQueries()
+        .fallbackToDestructiveMigration()
+        .build();
+    }
+    @Provides
+    public static WeatherDao provideDao (AppDatabase database) {
+        return database.weatherDao();
     }
 
 }

@@ -4,14 +4,33 @@ package com.example.weatherapp.data.model;
 
 
 
+
+
+
+
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import java.util.List;
 
 
-
+import com.example.weatherapp.data.converters.WeatherTypeConverter;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@Entity
 public class MainResponse  {
+    @PrimaryKey (autoGenerate = true)
+   private int idKey;
+
+    public int getIdKey() {
+        return idKey;
+    }
+
+    public void setIdKey(int idKey) {
+        this.idKey = idKey;
+    }
 
     @SerializedName("coord")
     @Expose
@@ -56,6 +75,8 @@ public class MainResponse  {
     @Expose
     private Integer cod;
 
+
+    @TypeConverters(WeatherTypeConverter.class)
     public Coord getCoord() {
         return coord;
     }
