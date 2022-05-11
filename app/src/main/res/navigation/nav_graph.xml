@@ -14,10 +14,16 @@
             android:id="@+id/action_weatherFragment_to_citySelectionFragment"
             app:destination="@id/citySelectionFragment" />
         <argument
-            android:name="cityName"
+            android:name="lat"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="Bishkek"
+            app:nullable="false"
+            android:defaultValue="42.882004"
+            />
+        <argument
+            android:name="lon"
+            app:argType="string"
+            app:nullable="false"
+            android:defaultValue="74.582748"
             />
 
 
@@ -31,10 +37,15 @@
             android:id="@+id/action_citySelectionFragment_to_weatherFragment"
             app:destination="@id/weatherFragment" >
         <argument
-            android:name="cityName"
+            android:name="lat"
             app:argType="string"
             app:nullable="false"
-
-            /></action>
+            />
+        <argument
+            android:name="lon"
+            app:argType="string"
+            app:nullable="false"
+            />
+        </action>
     </fragment>
 </navigation>

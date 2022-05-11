@@ -71,7 +71,7 @@ public class WeatherFragment extends BaseFragment<FragmentWeatherBinding>  {
 
     @Override
     protected void callRequests() {
-            viewModel.getWeather(args.getCityName() );
+            viewModel.getWeatherByCoord(args.getLat(),args.getLon());
     }
 
     @Override
